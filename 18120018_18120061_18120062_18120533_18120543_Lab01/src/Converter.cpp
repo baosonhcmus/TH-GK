@@ -139,11 +139,11 @@ int Converter::RGB2HSV(const cv::Mat& sourceImage, cv::Mat& destinationImage)
 			uchar green = pSrcRow[1];
 			uchar red = pSrcRow[2];
 			//HSV:
-			uchar h;
-			uchar s;
-			uchar v;
+			float h;
+			float s;
+			float v;
 			//Convert:
-			uchar Cmin, Cmax;
+			float Cmin, Cmax;
 			Cmin = blue < green ? blue : green;
 			Cmin = Cmin < red ? Cmin : red;
 
@@ -156,22 +156,22 @@ int Converter::RGB2HSV(const cv::Mat& sourceImage, cv::Mat& destinationImage)
 				s = 0;
 			}
 			else {
-				s = (uchar)((v - Cmin) / v);
+				s = (v - Cmin) / v;
 				if (v == red)
-					h = (uchar)(43 * (green - blue) / (v - Cmin));//43=(60/360).255;
+					h = 43 * (green - blue) / (v - Cmin);//43=(60/360).255;
 				else if (v == green)
-					h = (uchar)(85 + 43 * (blue - red) / (v - Cmin));//85=(120/360).255;
+					h = 85 + 43 * (blue - red) / (v - Cmin);//85=(120/360).255;
 				else
-					h = (uchar)(170 + 43 * (red - green) / (v - Cmin));//170=(240/360).255;
+					h = 170 + 43 * (red - green) / (v - Cmin);//170=(240/360).255;
 			}
 			if (h < 0) {
 				h += 255;
 			}
 			//[[h],[s],[v]] ;
 			// std::cout << "[" <</* int(h) << int(s) <<*/ int(v) << "]";
-			pDstRow[0] = h;
-			pDstRow[1] = s;
-			pDstRow[2] = v;
+			pDstRow[0] = (uchar)h;
+			pDstRow[1] = (uchar)s;
+			pDstRow[2] = (uchar)v;
 		}
 	}
 	return 1;
